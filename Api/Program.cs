@@ -6,6 +6,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPostgreSqlDbContext(builder.Configuration);
+builder.Services.AddPostgreSqlIdentityContext();
 
 var app = builder.Build();
 app.MapControllers();

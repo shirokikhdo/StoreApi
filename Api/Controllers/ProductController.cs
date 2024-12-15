@@ -15,7 +15,7 @@ public class ProductController : StoreController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProducts()
+    public async Task<ActionResult<ResponseServer>> GetProducts()
     {
         return Ok(new ResponseServer
         {
@@ -25,28 +25,26 @@ public class ProductController : StoreController
     }
 
     [HttpGet("{id}", Name = nameof(GetProductById))]
-    public async Task<IActionResult> GetProductById(int id)
+    public async Task<ActionResult<ResponseServer>> GetProductById(int id)
     {
         if (id <= 0)
-        {
             return BadRequest(new ResponseServer
             {
-                StatusCode = HttpStatusCode.BadRequest,
                 IsSuccess = false,
-                ErrorMessages = {"Неверный Id"}
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Неверный Id" }
             });
-        }
 
         var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
-        
+
         if (product is null)
             return NotFound(new ResponseServer
             {
-                StatusCode = HttpStatusCode.NotFound,
                 IsSuccess = false,
+                StatusCode = HttpStatusCode.NotFound,
                 ErrorMessages = {"Продукт по указанному Id не найден"}
             });
-        
+
         return Ok(new ResponseServer
         {
             StatusCode = HttpStatusCode.OK,
@@ -64,14 +62,12 @@ public class ProductController : StoreController
             {
                 if (productCreateDto.Image is null
                     || productCreateDto.Image.Length == 0)
-                {
                     return BadRequest(new ResponseServer
                     {
-                        StatusCode = HttpStatusCode.BadRequest,
                         IsSuccess = false,
-                        ErrorMessages = {"Image не может быть пустым"}
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = { "Image не может быть пустым" }
                     });
-                }
 
                 var item = new Product
                 {
@@ -96,17 +92,84 @@ public class ProductController : StoreController
 
             return BadRequest(new ResponseServer
             {
-                StatusCode = HttpStatusCode.BadRequest,
                 IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessages = {"Модель данных не подходит"}
             });
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return BadRequest(new ResponseServer
             {
-                StatusCode = HttpStatusCode.BadRequest,
                 IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = {"Что-то пошло не так", e.Message}
+            });
+        }
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<ResponseServer>> UpdateProduct(
+        int id,
+        [FromBody] ProductUpdateDto productUpdateDto)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (productUpdateDto is null
+                    || productUpdateDto.Id != id)
+                    return BadRequest(new ResponseServer
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = {"Несоответствие модели данных"}
+                    });
+
+                var productFromDb = await _dbContext.Products.FindAsync(id);
+                    
+                if(productFromDb is null)
+                    return NotFound(new ResponseServer
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.NotFound,
+                        ErrorMessages = { "Продукт с таким Id не найден" }
+                    });
+
+                productFromDb.Name = productUpdateDto.Name;
+                productFromDb.Description= productUpdateDto.Description;
+                if(!string.IsNullOrEmpty(productUpdateDto.SpecialTag))
+                    productFromDb.SpecialTag = productUpdateDto.SpecialTag;
+                if (!string.IsNullOrEmpty(productUpdateDto.Category))
+                    productFromDb.Category = productUpdateDto.Category;
+                productFromDb.Price = productUpdateDto.Price;
+                if(productUpdateDto.Image != null 
+                   && productUpdateDto.Image.Length > 0)
+                    productFromDb.Image = "https://placehold.co/300";
+
+                _dbContext.Products.Update(productFromDb);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(new ResponseServer
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = productFromDb
+                });
+            }
+
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Модель не соответствует" }
+            });
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessages = { "Что-то пошло не так", e.Message }
             });
         }

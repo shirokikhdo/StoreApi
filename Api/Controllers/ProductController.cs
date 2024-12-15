@@ -9,7 +9,8 @@ namespace Api.Controllers;
 
 public class ProductController : StoreController
 {
-    public ProductController(AppDbContext dbContext) : base(dbContext)
+    public ProductController(AppDbContext dbContext) 
+        : base(dbContext)
     {
 
     }

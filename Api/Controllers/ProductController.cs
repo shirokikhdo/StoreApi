@@ -174,4 +174,46 @@ public class ProductController : StoreController
             });
         }
     }
+
+    [HttpDelete]
+    public async Task<ActionResult<ResponseServer>> RemoveProductById(int id)
+    {
+        try
+        {
+            if (id <= 0)
+                return BadRequest(new ResponseServer
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = {"Неверный Id"}
+                });
+
+            var product = await _dbContext.Products.FindAsync(id);
+
+            if (product is null)
+                return NotFound(new ResponseServer
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = {"Продукт по указанному Id не найден"}
+                });
+
+            _dbContext.Products.Remove(product);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new ResponseServer
+            {
+                StatusCode = HttpStatusCode.NoContent,
+            });
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так", e.Message }
+            });
+        }
+    }
 }

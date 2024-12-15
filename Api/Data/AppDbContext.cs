@@ -7,6 +7,7 @@ namespace Api.Data;
 public class AppDbContext : IdentityDbContext
 {
     public DbSet<AppUser> AppUsers { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     public AppDbContext(DbContextOptions options) 
         : base(options)

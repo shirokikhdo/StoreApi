@@ -22,4 +22,34 @@ public class ProductController : StoreController
             Result = await _dbContext.Products.ToListAsync()
         });
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetProductById(int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest(new ResponseServer
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                IsSuccess = false,
+                ErrorMessages = {"Неверный Id"}
+            });
+        }
+
+        var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+        
+        if (product is null)
+            return NotFound(new ResponseServer
+            {
+                StatusCode = HttpStatusCode.NotFound,
+                IsSuccess = false,
+                ErrorMessages = {"Продукт по указанному Id не найден"}
+            });
+        
+        return Ok(new ResponseServer
+        {
+            StatusCode = HttpStatusCode.OK,
+            Result = product
+        });
+    }
 }

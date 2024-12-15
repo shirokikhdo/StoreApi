@@ -19,4 +19,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+await app.Services.InitializeRoleAsync();
+
 app.Run();

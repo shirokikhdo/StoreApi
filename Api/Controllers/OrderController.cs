@@ -115,4 +115,36 @@ public class OrderController : StoreController
             });
         }
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ResponseServer>> UpdateOrderHeader(
+        int id, [FromBody] OrderHeaderUpdateDto orderHeaderUpdateDto)
+    {
+        try
+        {
+            var success = await _ordersService.UpdateOrderHeaderAsync(id, orderHeaderUpdateDto);
+            if (success)
+                return Ok(new ResponseServer
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = "Всё обновлено"
+                });
+
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Обновление пошло не по плану" }
+            });
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorMessages = { "Что-то пошло не так", e.Message }
+            });
+        }
+    }
 }

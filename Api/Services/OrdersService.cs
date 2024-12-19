@@ -75,8 +75,7 @@ public class OrdersService
     }
 
     public async Task<bool> UpdateOrderHeaderAsync(
-        int id,
-        OrderHeaderUpdateDto orderHeaderUpdateDto)
+        int id, OrderHeaderUpdateDto orderHeaderUpdateDto)
     {
         if (orderHeaderUpdateDto == null
             || orderHeaderUpdateDto.OrderHeaderId != id)

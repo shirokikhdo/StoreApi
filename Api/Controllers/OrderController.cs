@@ -91,4 +91,28 @@ public class OrderController : StoreController
             });
         }
     }
+
+    [HttpGet]
+    public async Task<ActionResult<ResponseServer>> GetOrdersByUserId(string userId)
+    {
+        try
+        {
+            var orderHeaders = await _ordersService.GetOrdersByUserIdAsync(userId);
+
+            return Ok(new ResponseServer
+            {
+                StatusCode = HttpStatusCode.OK,
+                Result = orderHeaders
+            });
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так", e.Message }
+            });
+        }
+    }
 }

@@ -1,7 +1,9 @@
-﻿using Api.Common;
+﻿using System.Security.Cryptography.Xml;
+using Api.Common;
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -50,4 +52,10 @@ public class OrdersService
 
         return order;
     }
+
+    public async Task<OrderHeader> GetOrderById(int id) =>
+        await _dbContext.OrderHeaders
+            .Include(x => x.OrderDetailItems)
+            .ThenInclude(x => x.Product)
+            .FirstOrDefaultAsync(x => x.OrderHeaderId == id);
 }

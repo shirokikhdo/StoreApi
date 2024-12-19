@@ -228,4 +228,19 @@ public class ProductController : StoreController
             });
         }
     }
+    [HttpGet]
+    public async Task<ActionResult<ResponseServer>> FetchProductsWithPagination(
+        int skip = 0, int take = 5)
+    {
+        var products = await _dbContext.Products
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+        return Ok(new ResponseServer
+        {
+            StatusCode = HttpStatusCode.OK,
+            Result = products
+        });
+    }
 }

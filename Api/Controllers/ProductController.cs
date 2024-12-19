@@ -2,6 +2,7 @@
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
+using Api.Services.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,14 @@ namespace Api.Controllers;
 
 public class ProductController : StoreController
 {
-    public ProductController(AppDbContext dbContext) 
+    private readonly IFileStorageService _fileStorage;
+
+    public ProductController(
+        AppDbContext dbContext,
+        IFileStorageService fileStorage) 
         : base(dbContext)
     {
-
+        _fileStorage = fileStorage;
     }
 
     [HttpGet]
@@ -55,7 +60,7 @@ public class ProductController : StoreController
 
     [HttpPost]
     public async Task<ActionResult<ResponseServer>> CreateProduct(
-        [FromBody] ProductCreateDto productCreateDto)
+        [FromForm] ProductCreateDto productCreateDto)
     {
         try
         {
@@ -77,7 +82,7 @@ public class ProductController : StoreController
                     SpecialTag = productCreateDto.SpecialTag,
                     Category = productCreateDto.Category,
                     Price = productCreateDto.Price,
-                    Image = "https://placehold.co/250"
+                    Image = await _fileStorage.UploadFileAsync(productCreateDto.Image)
                 };
 
                 await _dbContext.Products.AddAsync(item);
@@ -112,7 +117,7 @@ public class ProductController : StoreController
     [HttpPut]
     public async Task<ActionResult<ResponseServer>> UpdateProduct(
         int id,
-        [FromBody] ProductUpdateDto productUpdateDto)
+        [FromForm] ProductUpdateDto productUpdateDto)
     {
         try
         {
@@ -144,9 +149,13 @@ public class ProductController : StoreController
                 if (!string.IsNullOrEmpty(productUpdateDto.Category))
                     productFromDb.Category = productUpdateDto.Category;
                 productFromDb.Price = productUpdateDto.Price;
-                if(productUpdateDto.Image != null 
-                   && productUpdateDto.Image.Length > 0)
-                    productFromDb.Image = "https://placehold.co/300";
+                if (productUpdateDto.Image != null
+                    && productUpdateDto.Image.Length > 0)
+                {
+                    await _fileStorage.RemoveFileAsync(
+                        productFromDb.Image.Split('/').Last());
+                    productFromDb.Image = await _fileStorage.UploadFileAsync(productUpdateDto.Image);
+                }
 
                 _dbContext.Products.Update(productFromDb);
                 await _dbContext.SaveChangesAsync();

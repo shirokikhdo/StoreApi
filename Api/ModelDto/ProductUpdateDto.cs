@@ -19,5 +19,5 @@ public class ProductUpdateDto
     [Range(1, 1000)]
     public double Price { get; set; }
 
-    public string Image { get; set; }
+    public IFormFile Image { get; set; }
 }

@@ -208,6 +208,7 @@ public class ProductController : StoreController
                     ErrorMessages = {"Продукт по указанному Id не найден"}
                 });
 
+            await _fileStorage.RemoveFileAsync(product.Image);
             _dbContext.Products.Remove(product);
             await _dbContext.SaveChangesAsync();
 

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241217190916_Add-CartItems-And-ShoppingCarts")]
-    partial class AddCartItemsAndShoppingCarts
+    [Migration("20241219203651_Add-All")]
+    partial class AddAll
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,75 @@ namespace Api.Migrations
                     b.HasIndex("ShoppingCartId");
 
                     b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Api.Models.OrderDetails", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderDetailId"));
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Api.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("OrderHeaderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderHeaderId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OrderDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TotalCount")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("TotalOrderAmount")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("OrderHeaderId");
+
+                    b.ToTable("OrderHeaders");
                 });
 
             modelBuilder.Entity("Api.Models.Product", b =>
@@ -87,201 +156,201 @@ namespace Api.Migrations
                         new
                         {
                             Id = 1,
-                            Category = "Категория 3",
-                            Description = "Работы соответствующих оценить проблем форм стороны гражданского организационной.",
-                            Image = "https://placehold.co/200",
-                            Name = "Лоснящийся Пластиковый Сабо",
-                            Price = 803.78999999999996,
+                            Category = "Категория 2",
+                            Description = "Всего практика с мира качества.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img7.png",
+                            Name = "Грубый Резиновый Кепка",
+                            Price = 529.12,
                             SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 2,
-                            Category = "Категория 3",
-                            Description = "Материально-технической организации кадровой.",
-                            Image = "https://placehold.co/200",
-                            Name = "Эргономичный Пластиковый Куртка",
-                            Price = 937.02999999999997,
+                            Category = "Категория 2",
+                            Description = "Управление условий национальный участниками отметить.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img8.png",
+                            Name = "Грубый Меховой Портмоне",
+                            Price = 6.4000000000000004,
                             SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 3,
-                            Category = "Категория 3",
-                            Description = "Роль принимаемых правительством направлений работы принципов отметить.",
-                            Image = "https://placehold.co/200",
-                            Name = "Лоснящийся Меховой Свитер",
-                            Price = 96.859999999999999,
-                            SpecialTag = "Новинка"
+                            Category = "Категория 2",
+                            Description = "Изменений концепция проверки.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img2.png",
+                            Name = "Грубый Стальной Носки",
+                            Price = 317.18000000000001,
+                            SpecialTag = "Рекомендуемый"
                         },
                         new
                         {
                             Id = 4,
                             Category = "Категория 2",
-                            Description = "Уровня активом сущности создание.",
-                            Image = "https://placehold.co/200",
-                            Name = "Практичный Неодимовый Автомобиль",
-                            Price = 84.239999999999995,
-                            SpecialTag = "Новинка"
+                            Description = "Что поэтапного дальнейшее занимаемых сущности вызывает.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img2.png",
+                            Name = "Маленький Резиновый Компьютер",
+                            Price = 351.10000000000002,
+                            SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 5,
-                            Category = "Категория 2",
-                            Description = "Формировании задания повседневной а.",
-                            Image = "https://placehold.co/200",
-                            Name = "Грубый Натуральный Кепка",
-                            Price = 67.329999999999998,
+                            Category = "Категория 1",
+                            Description = "Насущным количественный сомнений вызывает постоянный постоянное материально-технической собой.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img4.png",
+                            Name = "Свободный Меховой Стол",
+                            Price = 310.26999999999998,
                             SpecialTag = "Рекомендуемый"
                         },
                         new
                         {
                             Id = 6,
-                            Category = "Категория 2",
-                            Description = "Предложений базы активности интересный для.",
-                            Image = "https://placehold.co/200",
-                            Name = "Интеллектуальный Меховой Шарф",
-                            Price = 754.75,
-                            SpecialTag = "Популярный"
+                            Category = "Категория 3",
+                            Description = "Этих создаёт системы по внедрения форм выполнять.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img0.png",
+                            Name = "Великолепный Кожанный Кошелек",
+                            Price = 637.03999999999996,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 7,
-                            Category = "Категория 2",
-                            Description = "Плановых задача интересный же а систему поставленных правительством порядка.",
-                            Image = "https://placehold.co/200",
-                            Name = "Невероятный Меховой Кулон",
-                            Price = 59.850000000000001,
+                            Category = "Категория 1",
+                            Description = "Роль качественно социально-экономическое постоянный проверки последовательного.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img2.png",
+                            Name = "Лоснящийся Деревянный Майка",
+                            Price = 720.39999999999998,
                             SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 8,
                             Category = "Категория 2",
-                            Description = "Значимость процесс информационно-пропогандистское сущности базы дальнейших.",
-                            Image = "https://placehold.co/200",
-                            Name = "Лоснящийся Кожанный Компьютер",
-                            Price = 669.16999999999996,
-                            SpecialTag = "Рекомендуемый"
+                            Description = "Требует плановых сознания.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img4.png",
+                            Name = "Лоснящийся Кожанный Шарф",
+                            Price = 171.90000000000001,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 9,
-                            Category = "Категория 3",
-                            Description = "Практика настолько сущности нами прежде информационно-пропогандистское сфера постоянный.",
-                            Image = "https://placehold.co/200",
-                            Name = "Фантастический Хлопковый Портмоне",
-                            Price = 121.68000000000001,
+                            Category = "Категория 1",
+                            Description = "Общества отношении не.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img8.png",
+                            Name = "Интеллектуальный Неодимовый Куртка",
+                            Price = 34.149999999999999,
                             SpecialTag = "Рекомендуемый"
                         },
                         new
                         {
                             Id = 10,
-                            Category = "Категория 1",
-                            Description = "Развития общества показывает активом всего потребностям выбранный напрямую.",
-                            Image = "https://placehold.co/200",
-                            Name = "Большой Неодимовый Свитер",
-                            Price = 737.08000000000004,
-                            SpecialTag = "Новинка"
+                            Category = "Категория 3",
+                            Description = "Существующий сложившаяся проверки материально-технической организационной шагов.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img6.png",
+                            Name = "Фантастический Деревянный Стол",
+                            Price = 187.44,
+                            SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 11,
                             Category = "Категория 1",
-                            Description = "Количественный последовательного высокотехнологичная значительной таким значение дальнейшее.",
-                            Image = "https://placehold.co/200",
-                            Name = "Великолепный Стальной Кепка",
-                            Price = 861.22000000000003,
-                            SpecialTag = "Популярный"
+                            Description = "Значение идейные зависит кадровой широким плановых участниками концепция.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img0.png",
+                            Name = "Великолепный Натуральный Ножницы",
+                            Price = 216.34999999999999,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 12,
-                            Category = "Категория 2",
-                            Description = "Разработке практика всего нашей нашей идейные кругу начало.",
-                            Image = "https://placehold.co/200",
-                            Name = "Маленький Неодимовый Плащ",
-                            Price = 865.74000000000001,
+                            Category = "Категория 3",
+                            Description = "Постоянное этих последовательного общества различных и.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img2.png",
+                            Name = "Лоснящийся Меховой Кепка",
+                            Price = 995.35000000000002,
                             SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 13,
-                            Category = "Категория 3",
-                            Description = "Рост от уточнения реализация внедрения финансовых.",
-                            Image = "https://placehold.co/200",
-                            Name = "Интеллектуальный Бетонный Майка",
-                            Price = 62.859999999999999,
+                            Category = "Категория 2",
+                            Description = "Начало зависит значение.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img3.png",
+                            Name = "Великолепный Натуральный Стол",
+                            Price = 387.54000000000002,
                             SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 14,
                             Category = "Категория 2",
-                            Description = "Реализация обучения разнообразный равным нами дальнейшее показывает демократической.",
-                            Image = "https://placehold.co/200",
-                            Name = "Лоснящийся Натуральный Носки",
-                            Price = 837.49000000000001,
-                            SpecialTag = "Рекомендуемый"
+                            Description = "Активности различных широкому новых подготовке прогрессивного значение кругу участниками.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img8.png",
+                            Name = "Невероятный Хлопковый Кулон",
+                            Price = 909.00999999999999,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 15,
-                            Category = "Категория 1",
-                            Description = "Собой соответствующей настолько практика не способствует процесс.",
-                            Image = "https://placehold.co/200",
-                            Name = "Невероятный Стальной Кепка",
-                            Price = 850.63,
+                            Category = "Категория 2",
+                            Description = "Повседневной модели высокотехнологичная прежде.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img2.png",
+                            Name = "Великолепный Неодимовый Ремень",
+                            Price = 396.23000000000002,
                             SpecialTag = "Рекомендуемый"
                         },
                         new
                         {
                             Id = 16,
                             Category = "Категория 2",
-                            Description = "Прогрессивного что обучения современного предложений реализация значение играет широкому активизации.",
-                            Image = "https://placehold.co/200",
-                            Name = "Великолепный Деревянный Кошелек",
-                            Price = 33.880000000000003,
+                            Description = "Широким однако выполнять дальнейшее.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img4.png",
+                            Name = "Фантастический Бетонный Куртка",
+                            Price = 231.99000000000001,
                             SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 17,
                             Category = "Категория 2",
-                            Description = "Уточнения отношении сущности таким следует гражданского представляет материально-технической интересный обуславливает.",
-                            Image = "https://placehold.co/200",
-                            Name = "Невероятный Кожанный Автомобиль",
-                            Price = 895.38999999999999,
-                            SpecialTag = "Рекомендуемый"
+                            Description = "Постоянный нашей мира экономической влечёт инновационный сущности модернизации этих постоянный.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img3.png",
+                            Name = "Потрясающий Бетонный Носки",
+                            Price = 98.739999999999995,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 18,
-                            Category = "Категория 2",
-                            Description = "Нас роль широкому плановых активом.",
-                            Image = "https://placehold.co/200",
-                            Name = "Фантастический Резиновый Шарф",
-                            Price = 256.31999999999999,
-                            SpecialTag = "Рекомендуемый"
+                            Category = "Категория 1",
+                            Description = "Внедрения определения следует определения массового.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img7.png",
+                            Name = "Фантастический Кожанный Компьютер",
+                            Price = 462.43000000000001,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 19,
-                            Category = "Категория 1",
-                            Description = "Значимость предпосылки же консультация эксперимент качества.",
-                            Image = "https://placehold.co/200",
-                            Name = "Большой Бетонный Берет",
-                            Price = 560.74000000000001,
+                            Category = "Категория 3",
+                            Description = "Обуславливает и формировании проверки экономической значительной информационно-пропогандистское системы правительством.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img4.png",
+                            Name = "Потрясающий Кожанный Плащ",
+                            Price = 424.16000000000003,
                             SpecialTag = "Популярный"
                         },
                         new
                         {
                             Id = 20,
-                            Category = "Категория 2",
-                            Description = "Кругу постоянный влечёт рост образом новых различных повышению.",
-                            Image = "https://placehold.co/200",
-                            Name = "Грубый Пластиковый Свитер",
-                            Price = 411.10000000000002,
+                            Category = "Категория 3",
+                            Description = "Очевидна отметить формированию не кадровой практика.",
+                            Image = "https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img2.png",
+                            Name = "Маленький Натуральный Майка",
+                            Price = 260.36000000000001,
                             SpecialTag = "Рекомендуемый"
                         });
                 });
@@ -534,6 +603,23 @@ namespace Api.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Api.Models.OrderDetails", b =>
+                {
+                    b.HasOne("Api.Models.OrderHeader", null)
+                        .WithMany("OrderDetailItems")
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -583,6 +669,11 @@ namespace Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Api.Models.OrderHeader", b =>
+                {
+                    b.Navigation("OrderDetailItems");
                 });
 
             modelBuilder.Entity("Api.Models.ShoppingCart", b =>

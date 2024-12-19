@@ -13,7 +13,6 @@ public class OrderHeader
     public string CustomerEmail { get; set; }
     public string AppUserId { get; set; }
     [ForeignKey("AppUserId")]
-    public AppUser User { get; set; }
     public double TotalOrderAmount { get; set; }
     public DateTime OrderDateTime { get; set; }
     public string Status { get; set; }

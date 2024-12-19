@@ -51,4 +51,44 @@ public class OrderController : StoreController
             });
         }
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ResponseServer>> GetOrder(int id)
+    {
+        if (id <= 0)
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Неверный идентификатор заказа" }
+            });
+
+        try
+        {
+            var orderHeader = await _ordersService.GetOrderById(id);
+
+            if(orderHeader is null)
+                return NotFound(new ResponseServer
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = { "Заказ не найден" }
+                });
+
+            return Ok(new ResponseServer
+            {
+                StatusCode = HttpStatusCode.Created,
+                Result = orderHeader
+            });
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseServer
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так", e.Message }
+            });
+        }
+    }
 }

@@ -65,7 +65,7 @@ public class OrderController : StoreController
 
         try
         {
-            var orderHeader = await _ordersService.GetOrderById(id);
+            var orderHeader = await _ordersService.GetOrderByIdAsync(id);
 
             if(orderHeader is null)
                 return NotFound(new ResponseServer

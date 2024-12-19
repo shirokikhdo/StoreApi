@@ -17,7 +17,7 @@ public static class FakeProductGenerator
             .RuleFor(x => x.Category, y => y.PickRandom(categories))
             .RuleFor(x => x.SpecialTag, y => y.PickRandom(specialTags))
             .RuleFor(x => x.Price, y => Math.Round(y.Random.Double(1, 1000), 2))
-            .RuleFor(x => x.Image, y => $"https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img{Random.Shared.Next(10)}.png")
+            .RuleFor(x => x.Image, y => $"https://s3.timeweb.cloud/30b1c92c-a363-432d-8431-89db9d45df21/img{y.IndexFaker}.png")
             .Generate(count);
     }
 }

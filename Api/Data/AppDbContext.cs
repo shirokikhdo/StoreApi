@@ -23,6 +23,6 @@ public class AppDbContext : IdentityDbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<Product>().HasData(FakeProductGenerator.GenerateProductList());
+        builder.Entity<Product>().HasData(FakeProductGenerator.GenerateProductList(10));
     }
 }

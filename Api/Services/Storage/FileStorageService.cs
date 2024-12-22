@@ -7,6 +7,10 @@ using System.Text;
 
 namespace Api.Services.Storage;
 
+/// <summary>
+/// Сервис для работы с файловым хранилищем, который реализует интерфейс <see cref="IFileStorageService"/>.
+/// Предоставляет методы для загрузки и удаления файлов в облачном хранилище.
+/// </summary>
 public class FileStorageService : IFileStorageService
 {
     private readonly string _serviceURL;
@@ -16,6 +20,10 @@ public class FileStorageService : IFileStorageService
     private readonly string _bucketName;
     private readonly HttpClient _httpClient;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="FileStorageService"/>.
+    /// </summary>
+    /// <param name="options">Настройки для подключения к файловому хранилищу.</param>
     public FileStorageService(IOptions<TimeWebSettings> options)
     {
         _serviceURL = options.Value.ServiceURL;
@@ -26,6 +34,12 @@ public class FileStorageService : IFileStorageService
         _httpClient = new HttpClient();
     }
 
+    /// <summary>
+    /// Асинхронно загружает файл в файловое хранилище.
+    /// </summary>
+    /// <param name="file">Файл для загрузки.</param>
+    /// <returns>Асинхронная задача, представляющая URL загруженного файла.</returns>
+    /// <exception cref="Exception">Выбрасывается, если загрузка файла завершилась неудачно.</exception>
     public async Task<string> UploadFileAsync(IFormFile file)
     {
         var fileName = GenerateUniqueFileName(file.FileName);
@@ -68,6 +82,12 @@ public class FileStorageService : IFileStorageService
         }
     }
 
+    /// <summary>
+    /// Асинхронно удаляет файл из файлового хранилища.
+    /// </summary>
+    /// <param name="fileName">Имя файла, который необходимо удалить.</param>
+    /// <returns>Асинхронная задача, представляющая результат операции удаления в виде булевого значения.</returns>
+    /// <exception cref="Exception">Выбрасывается, если удаление файла завершилось неудачно.</exception>
     public async Task<bool> RemoveFileAsync(string fileName)
     {
         var requestUri = $"{_serviceURL}/{_bucketName}/{fileName}";

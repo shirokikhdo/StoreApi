@@ -10,12 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Контроллер для аутентификации пользователей, включая регистрацию и вход в систему.
+/// </summary>
 public class AuthController : StoreController
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly JwtTokenGenerator _jwtTokenGenerator;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="AuthController"/> с заданными зависимостями.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных для доступа к данным пользователей.</param>
+    /// <param name="userManager">Менеджер пользователей для управления операциями с пользователями.</param>
+    /// <param name="roleManager">Менеджер ролей для управления ролями пользователей.</param>
+    /// <param name="jwtTokenGenerator">Генератор JWT-токенов для аутентификации.</param>
     public AuthController(
         AppDbContext dbContext,
         UserManager<AppUser> userManager,
@@ -28,6 +38,11 @@ public class AuthController : StoreController
         _jwtTokenGenerator = jwtTokenGenerator;
     }
 
+    /// <summary>
+    /// Регистрация нового пользователя.
+    /// </summary>
+    /// <param name="registerRequestDto">Модель запроса для регистрации пользователя, содержащая данные пользователя.</param>
+    /// <returns>Результат операции регистрации в виде <see cref="ResponseServer"/>.</returns>
     [HttpPost]
     public async Task<ActionResult<ResponseServer>> Register(
         [FromBody] RegisterRequestDto registerRequestDto)
@@ -87,6 +102,11 @@ public class AuthController : StoreController
         });
     }
 
+    /// <summary>
+    /// Вход пользователя в систему.
+    /// </summary>
+    /// <param name="loginRequestDto">Модель запроса для входа пользователя, содержащая данные для аутентификации.</param>
+    /// <returns>Результат операции входа в систему в виде <see cref="ResponseServer"/> с JWT-токеном.</returns>
     [HttpPost]
     public async Task<ActionResult<ResponseServer>> Login(
         [FromBody] LoginRequestDto loginRequestDto)

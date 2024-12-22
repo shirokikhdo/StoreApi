@@ -3,8 +3,16 @@ using Bogus;
 
 namespace Api.Seed;
 
+/// <summary>
+/// Статический класс для генерации фейковых продуктов.
+/// </summary>
 public static class FakeProductGenerator
 {
+    /// <summary>
+    /// Генерирует список фейковых продуктов.
+    /// </summary>
+    /// <param name="count">Количество продуктов для генерации. По умолчанию равно 20.</param>
+    /// <returns>Список сгенерированных продуктов.</returns>
     public static List<Product> GenerateProductList(int count = 20)
     {
         var categories = new[] {"Категория 1", "Категория 2", "Категория 3"};

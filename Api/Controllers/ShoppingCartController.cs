@@ -7,10 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Контроллер для управления корзиной покупок пользователей.
+/// </summary>
 public class ShoppingCartController : StoreController
 {
     private readonly ShoppingCartService _shoppingCartService;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="ShoppingCartController"/> с заданным контекстом базы данных и сервисом корзины покупок.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных для доступа к данным.</param>
+    /// <param name="shoppingCartService">Сервис для работы с корзиной покупок.</param>
     public ShoppingCartController(
         AppDbContext dbContext,
         ShoppingCartService shoppingCartService) 
@@ -19,6 +27,13 @@ public class ShoppingCartController : StoreController
         _shoppingCartService = shoppingCartService;
     }
 
+    /// <summary>
+    /// Добавляет или обновляет товар в корзине покупок пользователя.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя, чья корзина будет обновлена.</param>
+    /// <param name="productId">Идентификатор продукта, который нужно добавить или обновить.</param>
+    /// <param name="updateQuantity">Количество товара для добавления или обновления в корзине.</param>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/>, содержащий сообщение об успешном обновлении корзины или ошибке.</returns>
     [HttpGet]
     public async Task<ActionResult<ResponseServer>> AppendOrUpdateItemInCart(
         string userId,
@@ -48,6 +63,11 @@ public class ShoppingCartController : StoreController
         });
     }
 
+    /// <summary>
+    /// Получает корзину покупок пользователя.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя, чью корзину нужно получить.</param>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/>, содержащий корзину покупок или сообщение об ошибке.</returns>
     [HttpGet]
     public async Task<ActionResult<ResponseServer>> GetShoppingCart(string userId)
     {

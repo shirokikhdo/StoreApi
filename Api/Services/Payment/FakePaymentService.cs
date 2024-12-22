@@ -2,22 +2,35 @@
 using Api.Common;
 using Api.Data;
 using Api.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services.Payment;
 
+/// <summary>
+/// Фейковый сервис для обработки платежей, реализующий интерфейс <see cref="IPaymentService"/>.
+/// </summary>
 public class FakePaymentService : IPaymentService
 {
     private const string CARD_NUMBER = "1111 2222 3333 4444";
     private readonly AppDbContext _dbContext;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="FakePaymentService"/>.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных для доступа к данным.</param>
     public FakePaymentService(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Асинхронно обрабатывает платеж для указанного пользователя и заказа.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя, инициирующего платеж.</param>
+    /// <param name="orderHeaderId">Идентификатор заголовка заказа.</param>
+    /// <param name="cardNumber">Номер карты для обработки платежа.</param>
+    /// <returns>Результат выполнения операции в виде объекта <see cref="ActionResult{ResponseServer}"/>.</returns>
     public async Task<ActionResult<ResponseServer>> HandlePaymentAsync(string userId, int orderHeaderId, string cardNumber)
     {
         var shoppingCart = await _dbContext.ShoppingCarts

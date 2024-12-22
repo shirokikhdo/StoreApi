@@ -4,8 +4,16 @@ using Microsoft.OpenApi.Models;
 
 namespace Api.Extensions;
 
+/// <summary>
+/// Расширение для настройки Swagger с пользовательскими параметрами конфигурации.
+/// </summary>
 public static class SwaggerGenCustomConfigServiceExtension
 {
+    /// <summary>
+    /// Добавляет пользовательскую конфигурацию Swagger в коллекцию служб.
+    /// </summary>
+    /// <param name="services">Коллекция служб, в которую будет добавлена конфигурация Swagger.</param>
+    /// <returns>Обновленная коллекция служб с добавленной конфигурацией Swagger.</returns>
     public static IServiceCollection AddSwaggerGenCustomConfig(
         this IServiceCollection services
     )

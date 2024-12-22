@@ -19,11 +19,8 @@ builder.Services.AddFileStorageService(builder.Configuration);
 var app = builder.Build();
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

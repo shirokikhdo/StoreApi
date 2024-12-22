@@ -8,10 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Контроллер для управления продуктами в магазине.
+/// </summary>
 public class ProductController : StoreController
 {
     private readonly IFileStorageService _fileStorage;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="ProductController"/> с заданным контекстом базы данных и сервисом хранения файлов.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных для доступа к данным продуктов.</param>
+    /// <param name="fileStorage">Сервис для загрузки и хранения файлов изображений продуктов.</param>
     public ProductController(
         AppDbContext dbContext,
         IFileStorageService fileStorage) 
@@ -20,6 +28,10 @@ public class ProductController : StoreController
         _fileStorage = fileStorage;
     }
 
+    /// <summary>
+    /// Получает список всех продуктов.
+    /// </summary>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/>, содержащий список продуктов.</returns>
     [HttpGet]
     public async Task<ActionResult<ResponseServer>> GetProducts()
     {
@@ -30,6 +42,11 @@ public class ProductController : StoreController
         });
     }
 
+    /// <summary>
+    /// Получает продукт по указанному идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор продукта.</param>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/>, содержащий продукт или сообщение об ошибке.</returns>
     [HttpGet("{id}", Name = nameof(GetProductById))]
     public async Task<ActionResult<ResponseServer>> GetProductById(int id)
     {
@@ -58,6 +75,11 @@ public class ProductController : StoreController
         });
     }
 
+    /// <summary>
+    /// Создает новый продукт.
+    /// </summary>
+    /// <param name="productCreateDto">Данные для создания продукта.</param>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/>, содержащий созданный продукт или сообщение об ошибке.</returns>
     [HttpPost]
     public async Task<ActionResult<ResponseServer>> CreateProduct(
         [FromForm] ProductCreateDto productCreateDto)
@@ -114,6 +136,12 @@ public class ProductController : StoreController
         }
     }
 
+    /// <summary>
+    /// Обновляет существующий продукт.
+    /// </summary>
+    /// <param name="id">Идентификатор продукта, который нужно обновить.</param>
+    /// <param name="productUpdateDto">Данные для обновления продукта.</param>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/>, содержащий обновленный продукт или сообщение об ошибке.</returns>
     [HttpPut]
     public async Task<ActionResult<ResponseServer>> UpdateProduct(
         int id,
@@ -185,6 +213,11 @@ public class ProductController : StoreController
         }
     }
 
+    /// <summary>
+    /// Удаляет продукт по заданному идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор продукта, который необходимо удалить.</param>
+    /// <returns>Возвращает результат операции в виде <see cref="ResponseServer"/> с информацией о статусе.</returns>
     [HttpDelete]
     public async Task<ActionResult<ResponseServer>> RemoveProductById(int id)
     {
@@ -228,6 +261,13 @@ public class ProductController : StoreController
             });
         }
     }
+
+    /// <summary>
+    /// Получает список продуктов с поддержкой пагинации.
+    /// </summary>
+    /// <param name="skip">Количество пропущенных записей (для пагинации).</param>
+    /// <param name="take">Количество записей, которые необходимо вернуть.</param>
+    /// <returns>Возвращает список продуктов в виде <see cref="ResponseServer"/> с информацией о статусе.</returns>
     [HttpGet]
     public async Task<ActionResult<ResponseServer>> FetchProductsWithPagination(
         int skip = 0, int take = 5)

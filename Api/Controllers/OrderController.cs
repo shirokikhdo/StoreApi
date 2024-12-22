@@ -7,10 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+/// <summary>
+/// Контроллер для управления заказами в магазине.
+/// </summary>
 public class OrderController : StoreController
 {
     private readonly OrdersService _ordersService;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="OrderController"/> с заданным контекстом базы данных и сервисом заказов.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных для доступа к данным.</param>
+    /// <param name="ordersService">Сервис для работы с заказами.</param>
     public OrderController(
         AppDbContext dbContext,
         OrdersService ordersService) 
@@ -19,6 +27,11 @@ public class OrderController : StoreController
         _ordersService = ordersService;
     }
 
+    /// <summary>
+    /// Создает новый заказ на основе предоставленных данных.
+    /// </summary>
+    /// <param name="orderHeaderCreateDto">Объект, содержащий данные для создания заказа.</param>
+    /// <returns>Результат операции в виде <see cref="ResponseServer"/>, содержащий информацию о созданном заказе или ошибке.</returns>
     [HttpPost]
     public async Task<ActionResult<ResponseServer>> CreateOrder(
         [FromBody] OrderHeaderCreateDto orderHeaderCreateDto)
@@ -52,6 +65,11 @@ public class OrderController : StoreController
         }
     }
 
+    /// <summary>
+    /// Получает информацию о заказе по его идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор заказа.</param>
+    /// <returns>Результат операции в виде <see cref="ResponseServer"/>, содержащий информацию о заказе или ошибке.</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<ResponseServer>> GetOrder(int id)
     {
@@ -92,6 +110,11 @@ public class OrderController : StoreController
         }
     }
 
+    /// <summary>
+    /// Получает все заказы, связанные с указанным идентификатором пользователя.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <returns>Результат операции в виде <see cref="ResponseServer"/>, содержащий список заказов пользователя или ошибку.</returns>
     [HttpGet]
     public async Task<ActionResult<ResponseServer>> GetOrdersByUserId(string userId)
     {
@@ -116,6 +139,12 @@ public class OrderController : StoreController
         }
     }
 
+    /// <summary>
+    /// Обновляет заголовок заказа по его идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор заказа.</param>
+    /// <param name="orderHeaderUpdateDto">Объект, содержащий данные для обновления заголовка заказа.</param>
+    /// <returns>Результат операции в виде <see cref="ResponseServer"/>, указывающий на успешное обновление или ошибку.</returns>
     [HttpPut("{id}")]
     public async Task<ActionResult<ResponseServer>> UpdateOrderHeader(
         int id, [FromBody] OrderHeaderUpdateDto orderHeaderUpdateDto)

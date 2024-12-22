@@ -6,15 +6,28 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
 
+/// <summary>
+/// Класс для генерации JWT-токенов.
+/// </summary>
 public class JwtTokenGenerator
 {
     private readonly string _secretKey;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="JwtTokenGenerator"/> с заданными настройками конфигурации.
+    /// </summary>
+    /// <param name="configuration">Объект конфигурации, содержащий параметры аутентификации.</param>
     public JwtTokenGenerator(IConfiguration configuration)
     {
         _secretKey = configuration["AuthSettings:SecretKey"];
     }
 
+    /// <summary>
+    /// Генерирует JWT-токен для указанного пользователя и ролей.
+    /// </summary>
+    /// <param name="user">Пользователь, для которого генерируется токен.</param>
+    /// <param name="roles">Список ролей, связанных с пользователем.</param>
+    /// <returns>Сгенерированный JWT-токен в виде строки.</returns>
     public string GenerateJwtToken(AppUser user, IList<string> roles)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
